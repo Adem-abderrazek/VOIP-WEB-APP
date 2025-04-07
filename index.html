@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enhanced Agora Web Call</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Agora Video Conference</h2>
+    
+    <div class="video-container">
+      <div id="local-player" class="video-player">
+        <div class="user-name">You</div>
+      </div>
+      <div id="remote-playerlist"></div>
+    </div>
+    
+    <div class="controls">
+      <div class="control-button" id="mic-btn">
+        <i class="fas fa-microphone"></i>
+      </div>
+      <div class="control-button" id="camera-btn">
+        <i class="fas fa-video"></i>
+      </div>
+      <div class="control-button" id="screen-btn">
+        <i class="fas fa-desktop"></i>
+      </div>
+      <div class="control-button" id="join-btn">
+        <i class="fas fa-phone-alt"></i>
+      </div>
+      <div class="control-button" id="leave-btn">
+        <i class="fas fa-phone-slash"></i>
+      </div>
+    </div>
+
+    <div class="settings">
+      <select id="camera-select">
+        <option value="">Select Camera</option>
+      </select>
+      <select id="mic-select">
+        <option value="">Select Microphone</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Agora Web SDK -->
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
