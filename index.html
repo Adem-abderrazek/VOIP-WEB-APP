@@ -3,44 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enhanced Agora Web Call</title>
+  <title>Kando - Project Video Call</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Inline critical styles to ensure page renders */
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --accent-color: #e74c3c;
+      --navbar-bg: #ffffff;
+    }
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --navbar-bg: #1a1a1a;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .navbar {
+      background-color: var(--navbar-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 60px auto 0;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Inline animation for circles */
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      25% { transform: translate(100px, 50px) scale(1.1) rotate(5deg); }
+      50% { transform: translate(50px, 100px) scale(0.9) rotate(-5deg); }
+      75% { transform: translate(-50px, 50px) scale(1.05) rotate(3deg); }
+      100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    }
+
+    /* Inline styles for circles */
+    .moving-circles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50% !important;
+      opacity: 0.15;
+      animation: float 15s infinite alternate ease-in-out;
+    }
+  </style>
 </head>
 <body>
+  <!-- Background circles container with inline styles to ensure proper positioning -->
+  <div class="moving-circles" id="movingCircles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none;"></div>
+  <nav class="navbar" id="navbar">
+    <a href="../KANDO_MVC/VIEW/dashboard.php" style="text-decoration: none;">
+      <div class="logo" style="color: var(--primary-color); font-weight: bold; font-size: 1.5rem;">
+        <i class="fas fa-tasks"></i> Kando
+      </div>
+    </a>
+    <div class="nav-links" style="display: flex; align-items: center; gap: 1.5rem;">
+      <a href="../KANDO_MVC/VIEW/dashboard.php" style="color: var(--text-color); text-decoration: none;">
+        Dashboard
+      </a>
+      <button id="themeToggle" style="background: none; border: none; cursor: pointer; color: var(--text-color);">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </nav>
+
   <div class="container">
-    <h2>Agora Video Conference</h2>
-    
-    <div class="video-container">
-      <div id="local-player" class="video-player">
-        <div class="user-name">You</div>
+    <h2 id="conference-title" style="text-align: center; margin-bottom: 20px;">Project Video Call</h2>
+
+    <div class="video-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-bottom: 20px;">
+      <div id="local-player" class="video-player" style="background-color: #333; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16/9;">
+        <div class="user-name" style="position: absolute; bottom: 10px; left: 10px; background-color: rgba(0,0,0,0.5); color: white; padding: 4px 8px; border-radius: 4px; font-size: 14px;">You</div>
       </div>
       <div id="remote-playerlist"></div>
     </div>
-    
-    <div class="controls">
-      <div class="control-button" id="mic-btn">
+
+    <div class="controls" style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
+      <div class="control-button" id="mic-btn" style="width: 50px; height: 50px; border-radius: 50%; background-color: #fff; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <i class="fas fa-microphone"></i>
       </div>
-      <div class="control-button" id="camera-btn">
+      <div class="control-button" id="camera-btn" style="width: 50px; height: 50px; border-radius: 50%; background-color: #fff; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <i class="fas fa-video"></i>
       </div>
-      <div class="control-button" id="screen-btn">
+      <div class="control-button" id="screen-btn" style="width: 50px; height: 50px; border-radius: 50%; background-color: #fff; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <i class="fas fa-desktop"></i>
       </div>
-      <div class="control-button" id="join-btn">
-        <i class="fas fa-phone-alt"></i>
+      <div class="control-button" id="join-btn" style="width: 50px; height: 50px; border-radius: 50%; background-color: var(--secondary-color); display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <i class="fas fa-phone-alt" style="color: white;"></i>
       </div>
-      <div class="control-button" id="leave-btn">
-        <i class="fas fa-phone-slash"></i>
+      <div class="control-button" id="leave-btn" style="width: 50px; height: 50px; border-radius: 50%; background-color: var(--accent-color); display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: none;">
+        <i class="fas fa-phone-slash" style="color: white;"></i>
       </div>
     </div>
 
-    <div class="settings">
-      <select id="camera-select">
+    <div class="settings" style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+      <select id="camera-select" style="padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd;">
         <option value="">Select Camera</option>
       </select>
-      <select id="mic-select">
+      <select id="mic-select" style="padding: 8px 12px; border-radius: 4px; border: 1px solid #ddd;">
         <option value="">Select Microphone</option>
       </select>
     </div>
@@ -49,5 +137,176 @@
   <!-- Agora Web SDK -->
   <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
   <script src="script.js"></script>
+
+  <!-- Circle creation script - enhanced version -->
+  <script>
+    // Create animated background circles
+    function createCircles() {
+      const movingCircles = document.getElementById('movingCircles');
+      if (!movingCircles) return;
+
+      // Clear any existing circles
+      movingCircles.innerHTML = '';
+
+      const circleCount = 5;
+      const colors = [
+        '#3498db', // Primary color
+        '#2ecc71', // Secondary color
+        '#e74c3c'  // Accent color
+      ];
+
+      for (let i = 0; i < circleCount; i++) {
+        const circle = document.createElement('div');
+        circle.classList.add('circle');
+
+        // Random position, size, and animation
+        const size = Math.random() * 200 + 100;
+
+        // Set explicit styles to ensure proper rendering
+        circle.style.position = 'absolute';
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        circle.style.borderRadius = '50%';
+        circle.style.opacity = '0.15';
+
+        // Position randomly across the entire viewport
+        circle.style.left = `${Math.random() * 100}%`;
+        circle.style.top = `${Math.random() * 100}%`;
+
+        // Set color and animation properties
+        circle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        // Set animation with explicit properties to ensure it works
+        circle.style.animationName = 'float';
+        circle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+        circle.style.animationTimingFunction = 'ease-in-out';
+        circle.style.animationDelay = `${Math.random() * 5}s`;
+        circle.style.animationIterationCount = 'infinite';
+        circle.style.animationDirection = 'alternate';
+        circle.style.animationFillMode = 'both';
+
+        movingCircles.appendChild(circle);
+      }
+    }
+
+    function updateCircleColors() {
+      const circles = document.querySelectorAll('.circle');
+      circles.forEach(circle => {
+        const colors = [
+          'var(--primary-color)',
+          'var(--secondary-color)',
+          'var(--accent-color)'
+        ];
+        circle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      });
+    }
+
+    // Create circles immediately
+    document.addEventListener('DOMContentLoaded', createCircles);
+
+    // Also create circles now in case DOMContentLoaded already fired
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      createCircles();
+    }
+
+    // Create circles right now as a fallback
+    setTimeout(createCircles, 100);
+
+    // Add a window load event as another fallback
+    window.addEventListener('load', createCircles);
+  </script>
+  <script>
+    // Simple theme toggle function
+    document.getElementById('themeToggle').addEventListener('click', function() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+      // Save theme preference
+      localStorage.setItem('theme', newTheme);
+
+      // Apply theme
+      document.documentElement.setAttribute('data-theme', newTheme);
+      document.body.setAttribute('data-theme', newTheme);
+
+      // Update icon
+      const icon = this.querySelector('i');
+      if (icon) {
+        icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      }
+
+      // Update circle colors
+      updateCircleColors();
+    });
+
+    // Apply saved theme on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.body.setAttribute('data-theme', savedTheme);
+
+      const themeToggleBtn = document.getElementById('themeToggle');
+      if (themeToggleBtn) {
+        const icon = themeToggleBtn.querySelector('i');
+        if (icon) {
+          icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+      }
+    });
+
+    // Also apply theme immediately in case DOMContentLoaded already fired
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.body.setAttribute('data-theme', savedTheme);
+
+    const themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+      const icon = themeToggleBtn.querySelector('i');
+      if (icon) {
+        icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
+  </script>
+
+  <!-- Final attempt to create circles -->
+  <script>
+    // One last attempt to create circles with direct animation
+    try {
+      // Clear any existing circles
+      const movingCircles = document.getElementById('movingCircles');
+      if (movingCircles) {
+        movingCircles.innerHTML = '';
+
+        // Create circles with direct animation styles
+        const colors = ['#3498db', '#2ecc71', '#e74c3c'];
+
+        for (let i = 0; i < 5; i++) {
+          const circle = document.createElement('div');
+
+          // Random position, size, and animation
+          const size = Math.random() * 200 + 100;
+          const delay = Math.random() * 5;
+          const duration = Math.random() * 10 + 15;
+
+          // Apply all styles directly
+          circle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            border-radius: 50%;
+            opacity: 0.15;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+            animation: float ${duration}s infinite alternate ease-in-out ${delay}s;
+            transform-origin: center center;
+          `;
+
+          movingCircles.appendChild(circle);
+        }
+      }
+    } catch (e) {
+      console.error('Error creating circles:', e);
+    }
+  </script>
 </body>
 </html>
